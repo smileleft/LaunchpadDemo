@@ -1,0 +1,124 @@
+<UserControl x:Class="LaunchControl.Views.SequencerPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:conv="clr-namespace:LaunchControl.Converters">
+    <UserControl.Resources>
+        <conv:StepStateToRowBrush x:Key="RowBrush"/>
+        <conv:BoolToVis x:Key="BoolVis"/>
+    </UserControl.Resources>
+
+    <Border Style="{StaticResource Panel}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>  <!-- header -->
+                <RowDefinition Height="Auto"/>  <!-- clock -->
+                <RowDefinition Height="Auto"/>  <!-- controls -->
+                <RowDefinition Height="Auto"/>  <!-- hold reason -->
+                <RowDefinition Height="Auto"/>  <!-- step head -->
+                <RowDefinition Height="*"/>     <!-- steps -->
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" Style="{StaticResource HeaderBar}">
+                <Grid>
+                    <TextBlock Text="COUNTDOWN / SEQUENCER" Style="{StaticResource PanelHeader}"/>
+                    <TextBlock Text="{Binding SequenceText}" Style="{StaticResource PanelHeader}"
+                               Foreground="{StaticResource Info}" HorizontalAlignment="Right"/>
+                </Grid>
+            </Border>
+
+            <!-- Big clock -->
+            <Border Grid.Row="1" Background="{StaticResource Bg0}" Padding="0,18" BorderBrush="{StaticResource Line}" BorderThickness="0,0,0,1">
+                <StackPanel HorizontalAlignment="Center">
+                    <TextBlock Text="COUNTDOWN CLOCK" Foreground="{StaticResource TextMuted}" FontSize="9"
+                               HorizontalAlignment="Center" Margin="0,0,0,4"/>
+                    <TextBlock Text="{Binding ClockText}" FontFamily="{StaticResource FontMono}"
+                               FontSize="48" FontWeight="Bold" Foreground="{StaticResource Info}"
+                               HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Controls -->
+            <Border Grid.Row="2" Padding="10">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="8"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Grid.Row="0" Grid.Column="0" Content="&#x25B6;  START / RESUME"
+                            Style="{StaticResource GoButton}" Command="{Binding ResumeCommand}" Margin="0,0,0,8"/>
+                    <Button Grid.Row="0" Grid.Column="2" Content="&#x23F8;  HOLD"
+                            Style="{StaticResource HoldButton}" Command="{Binding HoldCommand}" Margin="0,0,0,8"/>
+
+                    <Button Grid.Row="1" Grid.Column="0" Content="&#x21BB;  RECYCLE"
+                            Style="{StaticResource CmdButton}" Command="{Binding RecycleCommand}"/>
+                    <Button Grid.Row="1" Grid.Column="2" Content="&#x2715;  ABORT"
+                            Style="{StaticResource AbortButton}" Command="{Binding AbortCommand}"/>
+                </Grid>
+            </Border>
+
+            <!-- Secondary: initial start (from idle) + hold reason -->
+            <Border Grid.Row="3" Padding="10,0,10,10">
+                <StackPanel>
+                    <Button Content="&#x25B6;  SEQUENCE START (IDLE→RUN)"
+                            Style="{StaticResource CmdButton}" Command="{Binding StartCommand}"/>
+                    <Border Margin="0,8,0,0" Background="{StaticResource CautionDim}" BorderBrush="{StaticResource Caution}"
+                            BorderThickness="1" Padding="10,6"
+                            Visibility="{Binding HoldReason, Converter={StaticResource BoolVis}, FallbackValue=Collapsed}">
+                        <TextBlock Text="{Binding HoldReason}" Foreground="{StaticResource Caution}" FontSize="11" TextWrapping="Wrap"/>
+                    </Border>
+                </StackPanel>
+            </Border>
+
+            <!-- Step list header -->
+            <Border Grid.Row="4" Background="{StaticResource Bg1}" BorderBrush="{StaticResource Line}" BorderThickness="0,1,0,1" Padding="10,5">
+                <TextBlock Text="AUTOMATED SEQUENCE" Foreground="{StaticResource TextMuted}" FontSize="10" FontWeight="SemiBold"/>
+            </Border>
+
+            <ScrollViewer Grid.Row="5" VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding Steps}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Background="{Binding State, Converter={StaticResource RowBrush}}"
+                                    BorderBrush="{StaticResource Line}" BorderThickness="0,0,0,1" Padding="10,7">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="20"/>
+                                        <ColumnDefinition Width="88"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Column="0" Text="{Binding StateGlyph}" Foreground="{Binding Accent}"
+                                               FontSize="13" VerticalAlignment="Center"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding TMark}" FontFamily="{StaticResource FontMono}"
+                                               FontSize="12" Foreground="{Binding Accent}" VerticalAlignment="Center" FontWeight="SemiBold"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding Title}" Foreground="{StaticResource TextPrimary}"
+                                               FontSize="12" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+
+                                    <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Center">
+                                        <Border Background="{StaticResource CautionDim}" BorderBrush="{StaticResource Caution}"
+                                                BorderThickness="1" CornerRadius="2" Padding="4,0" Margin="3,0,0,0"
+                                                Visibility="{Binding AutoHold, Converter={StaticResource BoolVis}}">
+                                            <TextBlock Text="HOLD" Foreground="{StaticResource Caution}" FontSize="8" FontWeight="Bold"/>
+                                        </Border>
+                                        <Border Background="{StaticResource InhibitDim}" BorderBrush="{StaticResource Inhibit}"
+                                                BorderThickness="1" CornerRadius="2" Padding="4,0" Margin="3,0,0,0"
+                                                Visibility="{Binding RequiresApproval, Converter={StaticResource BoolVis}}">
+                                            <TextBlock Text="APPR" Foreground="{StaticResource Inhibit}" FontSize="8" FontWeight="Bold"/>
+                                        </Border>
+                                    </StackPanel>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Grid>
+    </Border>
+</UserControl>

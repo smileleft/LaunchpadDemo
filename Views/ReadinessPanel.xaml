@@ -1,0 +1,117 @@
+<UserControl x:Class="LaunchControl.Views.ReadinessPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:conv="clr-namespace:LaunchControl.Converters">
+    <UserControl.Resources>
+        <conv:StatusLevelToBrush x:Key="LvlBrush"/>
+    </UserControl.Resources>
+
+    <Border Style="{StaticResource Panel}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>  <!-- header -->
+                <RowDefinition Height="Auto"/>  <!-- summary banner -->
+                <RowDefinition Height="Auto"/>  <!-- column head -->
+                <RowDefinition Height="*"/>     <!-- rows -->
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" Style="{StaticResource HeaderBar}">
+                <Grid>
+                    <TextBlock Text="LAUNCH READINESS MATRIX" Style="{StaticResource PanelHeader}"/>
+                    <TextBlock Text="LAUNCH COMMIT CRITERIA" Style="{StaticResource PanelHeader}"
+                               Foreground="{StaticResource TextMuted}" HorizontalAlignment="Right"/>
+                </Grid>
+            </Border>
+
+            <!-- Summary banner -->
+            <Border Grid.Row="1" Background="{StaticResource Bg2}" Padding="12,10" BorderBrush="{StaticResource Line}" BorderThickness="0,0,0,1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Border Grid.Column="0" Background="{Binding OverallLevel, Converter={StaticResource LvlBrush}}"
+                            CornerRadius="3" Padding="18,8" VerticalAlignment="Center">
+                        <StackPanel>
+                            <TextBlock Text="OVERALL READINESS" Foreground="#0A0E14" FontSize="9" FontWeight="SemiBold"/>
+                            <TextBlock Text="{Binding OverallReadiness}" Foreground="#0A0E14" FontSize="26" FontWeight="Bold"/>
+                        </StackPanel>
+                    </Border>
+
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <StackPanel Margin="18,0">
+                            <TextBlock Text="GO" Foreground="{StaticResource TextMuted}" FontSize="10" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding GoCount}" Foreground="{StaticResource Go}" FontFamily="{StaticResource FontMono}" FontSize="28" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Margin="18,0">
+                            <TextBlock Text="HOLD" Foreground="{StaticResource TextMuted}" FontSize="10" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding HoldCount}" Foreground="{StaticResource Caution}" FontFamily="{StaticResource FontMono}" FontSize="28" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Margin="18,0">
+                            <TextBlock Text="NO-GO" Foreground="{StaticResource TextMuted}" FontSize="10" HorizontalAlignment="Center"/>
+                            <TextBlock Text="{Binding NoGoCount}" Foreground="{StaticResource NoGo}" FontFamily="{StaticResource FontMono}" FontSize="28" FontWeight="Bold" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Column header -->
+            <Border Grid.Row="2" Background="{StaticResource Bg1}" BorderBrush="{StaticResource Line}" BorderThickness="0,0,0,1" Padding="12,6">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="70"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="70"/>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="80"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="ID"        Foreground="{StaticResource TextMuted}" FontSize="10" FontWeight="SemiBold"/>
+                    <TextBlock Grid.Column="1" Text="CRITERION" Foreground="{StaticResource TextMuted}" FontSize="10" FontWeight="SemiBold"/>
+                    <TextBlock Grid.Column="2" Text="OWNER"     Foreground="{StaticResource TextMuted}" FontSize="10" FontWeight="SemiBold"/>
+                    <TextBlock Grid.Column="3" Text="MEASURED"  Foreground="{StaticResource TextMuted}" FontSize="10" FontWeight="SemiBold"/>
+                    <TextBlock Grid.Column="4" Text="LIMIT"     Foreground="{StaticResource TextMuted}" FontSize="10" FontWeight="SemiBold"/>
+                    <TextBlock Grid.Column="5" Text="STATUS"    Foreground="{StaticResource TextMuted}" FontSize="10" FontWeight="SemiBold" HorizontalAlignment="Right"/>
+                </Grid>
+            </Border>
+
+            <ScrollViewer Grid.Row="3" VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemsSource="{Binding Readiness}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="{StaticResource Line}" BorderThickness="0,0,0,1" Padding="12,9">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="70"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="70"/>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="120"/>
+                                        <ColumnDefinition Width="80"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <TextBlock Grid.Column="0" Text="{Binding Id}" FontFamily="{StaticResource FontMono}"
+                                               FontSize="11" Foreground="{StaticResource TextSecondary}" VerticalAlignment="Center"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding Criterion}" Foreground="{StaticResource TextPrimary}"
+                                               FontSize="12" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding Owner}" Foreground="{StaticResource TextMuted}"
+                                               FontSize="10" VerticalAlignment="Center"/>
+                                    <TextBlock Grid.Column="3" Text="{Binding Measured}" FontFamily="{StaticResource FontMono}"
+                                               FontSize="12" Foreground="{Binding Accent}" VerticalAlignment="Center"/>
+                                    <TextBlock Grid.Column="4" Text="{Binding Limit}" FontFamily="{StaticResource FontMono}"
+                                               FontSize="11" Foreground="{StaticResource TextSecondary}" VerticalAlignment="Center"/>
+                                    <Border Grid.Column="5" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                            Background="{Binding Accent}" CornerRadius="2" Padding="8,2" MinWidth="54">
+                                        <TextBlock Text="{Binding StateText}" Foreground="#0A0E14" FontSize="10"
+                                                   FontWeight="Bold" HorizontalAlignment="Center"/>
+                                    </Border>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+        </Grid>
+    </Border>
+</UserControl>

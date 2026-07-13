@@ -1,0 +1,191 @@
+<UserControl x:Class="LaunchControl.Views.PressurizationPurgePanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             MinWidth="1050" MinHeight="650">
+    <UserControl.Resources>
+        <Style x:Key="Tag" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="{StaticResource FontMono}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextMuted}"/>
+            <Setter Property="FontSize" Value="9"/>
+        </Style>
+        <Style x:Key="Value" TargetType="TextBlock">
+            <Setter Property="FontFamily" Value="{StaticResource FontMono}"/>
+            <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+        </Style>
+        <Style x:Key="Valve" TargetType="Border">
+            <Setter Property="Width" Value="30"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="CornerRadius" Value="15"/>
+            <Setter Property="Background" Value="{StaticResource GoDim}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Go}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="42"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="96"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Style="{StaticResource Panel}">
+            <Grid Margin="12,0">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="PRESSURIZATION &amp; PURGE SYSTEM" Foreground="{StaticResource TextPrimary}" FontWeight="Bold" FontSize="14"/>
+                    <Border Background="{StaticResource GoDim}" BorderBrush="{StaticResource Go}" BorderThickness="1" Margin="14,0,0,0" Padding="8,3">
+                        <TextBlock Text="AUTO · NOMINAL" Foreground="{StaticResource Go}" FontWeight="Bold" FontSize="10"/>
+                    </Border>
+                </StackPanel>
+                <TextBlock Text="GN2 PURGE · HE PRESSURIZATION · VEHICLE UMBILICAL" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{StaticResource TextMuted}" FontSize="10"/>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1" Margin="0,8,0,8">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="320"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Style="{StaticResource Panel}" Margin="0,0,8,0">
+                <Grid>
+                    <Border Style="{StaticResource HeaderBar}" VerticalAlignment="Top" Height="34">
+                        <TextBlock Text="P&amp;ID · GAS SUPPLY AND DISTRIBUTION" Style="{StaticResource PanelHeader}"/>
+                    </Border>
+                    <Canvas Margin="10,42,10,10" Background="{StaticResource Bg0}" ClipToBounds="True">
+                        <!-- GN2 bank -->
+                        <Border Canvas.Left="35" Canvas.Top="75" Width="130" Height="150" CornerRadius="16" BorderBrush="{StaticResource Info}" BorderThickness="2" Background="{StaticResource Bg1}">
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="GN2-BANK-01" Style="{StaticResource Tag}"/>
+                                <TextBlock Text="NITROGEN" Foreground="{StaticResource Info}" FontWeight="Bold" Margin="0,5"/>
+                                <TextBlock Text="{Binding Gn2BankPressure, StringFormat={}{0:0.0} MPa}" Style="{StaticResource Value}"/>
+                                <TextBlock Text="SUPPLY" Foreground="{StaticResource TextMuted}" FontSize="9"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Helium bank -->
+                        <Border Canvas.Left="35" Canvas.Top="360" Width="130" Height="150" CornerRadius="16" BorderBrush="{StaticResource Caution}" BorderThickness="2" Background="{StaticResource Bg1}">
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="HE-BANK-01" Style="{StaticResource Tag}"/>
+                                <TextBlock Text="HELIUM" Foreground="{StaticResource Caution}" FontWeight="Bold" Margin="0,5"/>
+                                <TextBlock Text="{Binding HeBankPressure, StringFormat={}{0:0.0} MPa}" Style="{StaticResource Value}"/>
+                                <TextBlock Text="SUPPLY" Foreground="{StaticResource TextMuted}" FontSize="9"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- GN2 line -->
+                        <Rectangle Canvas.Left="165" Canvas.Top="148" Width="590" Height="4" Fill="{StaticResource Info}"/>
+                        <Border Canvas.Left="215" Canvas.Top="135" Style="{StaticResource Valve}"><TextBlock Text="V" Foreground="{StaticResource Go}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/></Border>
+                        <TextBlock Canvas.Left="206" Canvas.Top="169" Text="XV-301 OPEN" Style="{StaticResource Tag}"/>
+                        <Border Canvas.Left="300" Canvas.Top="125" Width="90" Height="50" BorderBrush="{StaticResource Info}" BorderThickness="1" Background="{StaticResource Bg2}">
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center"><TextBlock Text="PRV-301" Style="{StaticResource Tag}"/><TextBlock Text="0.55 MPa" Foreground="{StaticResource Info}" FontWeight="Bold"/></StackPanel>
+                        </Border>
+                        <TextBlock Canvas.Left="425" Canvas.Top="112" Text="FT-302" Style="{StaticResource Tag}"/>
+                        <TextBlock Canvas.Left="425" Canvas.Top="132" Text="{Binding PurgeFlow, StringFormat={}{0:0.0} Nm³/h}" Style="{StaticResource Value}" Foreground="{StaticResource Info}"/>
+                        <Border Canvas.Left="545" Canvas.Top="135" Style="{StaticResource Valve}"><TextBlock Text="V" Foreground="{StaticResource Go}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/></Border>
+                        <TextBlock Canvas.Left="532" Canvas.Top="169" Text="FCV-303 AUTO" Style="{StaticResource Tag}"/>
+
+                        <!-- GN2 branch to payload/fairing -->
+                        <Rectangle Canvas.Left="630" Canvas.Top="150" Width="4" Height="110" Fill="{StaticResource Info}"/>
+                        <Rectangle Canvas.Left="630" Canvas.Top="258" Width="125" Height="4" Fill="{StaticResource Info}"/>
+                        <Border Canvas.Left="617" Canvas.Top="205" Style="{StaticResource Valve}"><TextBlock Text="V" Foreground="{StaticResource Go}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/></Border>
+                        <TextBlock Canvas.Left="645" Canvas.Top="212" Text="PURGE MANIFOLD" Style="{StaticResource Tag}"/>
+
+                        <!-- Helium line -->
+                        <Rectangle Canvas.Left="165" Canvas.Top="435" Width="590" Height="4" Fill="{StaticResource Caution}"/>
+                        <Border Canvas.Left="215" Canvas.Top="422" Style="{StaticResource Valve}"><TextBlock Text="V" Foreground="{StaticResource Go}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/></Border>
+                        <TextBlock Canvas.Left="206" Canvas.Top="456" Text="XV-401 OPEN" Style="{StaticResource Tag}"/>
+                        <Border Canvas.Left="300" Canvas.Top="412" Width="90" Height="50" BorderBrush="{StaticResource Caution}" BorderThickness="1" Background="{StaticResource Bg2}">
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center"><TextBlock Text="PRV-401" Style="{StaticResource Tag}"/><TextBlock Text="{Binding HeRegulatedPressure, StringFormat={}{0:0.00} MPa}" Foreground="{StaticResource Caution}" FontWeight="Bold"/></StackPanel>
+                        </Border>
+                        <TextBlock Canvas.Left="425" Canvas.Top="398" Text="PT-402" Style="{StaticResource Tag}"/>
+                        <TextBlock Canvas.Left="425" Canvas.Top="418" Text="{Binding VehiclePressPressure, StringFormat={}{0:0.00} MPa}" Style="{StaticResource Value}" Foreground="{StaticResource Caution}"/>
+                        <Border Canvas.Left="545" Canvas.Top="422" Style="{StaticResource Valve}"><TextBlock Text="V" Foreground="{StaticResource Go}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/></Border>
+                        <TextBlock Canvas.Left="532" Canvas.Top="456" Text="PCV-403 AUTO" Style="{StaticResource Tag}"/>
+
+                        <!-- Vehicle -->
+                        <Border Canvas.Left="755" Canvas.Top="195" Width="120" Height="240" BorderBrush="{StaticResource TextSecondary}" BorderThickness="1" Background="{StaticResource Bg2}" CornerRadius="55,55,10,10">
+                            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Text="LAUNCH VEHICLE" Foreground="{StaticResource TextPrimary}" FontWeight="Bold" TextAlignment="Center"/>
+                                <TextBlock Text="UMB-GAS-01" Style="{StaticResource Tag}" Margin="0,10,0,0"/>
+                                <TextBlock Text="CONNECTED" Foreground="{StaticResource Go}" FontSize="10" FontWeight="Bold"/>
+                                <Separator Margin="5,12" Background="{StaticResource Line}"/>
+                                <TextBlock Text="O₂" Style="{StaticResource Tag}"/>
+                                <TextBlock Text="{Binding PurgeOxygen, StringFormat={}{0:0.00}%}" Style="{StaticResource Value}" Foreground="{StaticResource Go}"/>
+                                <TextBlock Text="DEW POINT" Style="{StaticResource Tag}" Margin="0,8,0,0"/>
+                                <TextBlock Text="{Binding PurgeDewPoint, StringFormat={}{0:0.0} °C}" Style="{StaticResource Value}"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Exhaust/vent -->
+                        <Rectangle Canvas.Left="815" Canvas.Top="435" Width="4" Height="68" Fill="{StaticResource Inhibit}"/>
+                        <Border Canvas.Left="802" Canvas.Top="485" Style="{StaticResource Valve}" BorderBrush="{StaticResource Inhibit}" Background="{StaticResource InhibitDim}"><TextBlock Text="V" Foreground="{StaticResource Inhibit}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
+                        <TextBlock Canvas.Left="838" Canvas.Top="494" Text="VENT CLOSED" Foreground="{StaticResource Inhibit}" FontSize="9"/>
+                    </Canvas>
+                </Grid>
+            </Border>
+
+            <StackPanel Grid.Column="1">
+                <Border Style="{StaticResource Panel}" Margin="0,0,0,8">
+                    <StackPanel>
+                        <Border Style="{StaticResource HeaderBar}"><TextBlock Text="SYSTEM SUMMARY" Style="{StaticResource PanelHeader}"/></Border>
+                        <Grid Margin="12">
+                            <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions><RowDefinition Height="30"/><RowDefinition Height="30"/><RowDefinition Height="30"/><RowDefinition Height="30"/><RowDefinition Height="30"/></Grid.RowDefinitions>
+                            <TextBlock Text="GN2 purge" Foreground="{StaticResource TextSecondary}"/><TextBlock Grid.Column="1" Text="ACTIVE" Foreground="{StaticResource Go}" FontWeight="Bold"/>
+                            <TextBlock Grid.Row="1" Text="Helium pressurization" Foreground="{StaticResource TextSecondary}"/><TextBlock Grid.Row="1" Grid.Column="1" Text="STANDBY" Foreground="{StaticResource Caution}" FontWeight="Bold"/>
+                            <TextBlock Grid.Row="2" Text="Umbilical" Foreground="{StaticResource TextSecondary}"/><TextBlock Grid.Row="2" Grid.Column="1" Text="MATED" Foreground="{StaticResource Go}"/>
+                            <TextBlock Grid.Row="3" Text="Gas detection" Foreground="{StaticResource TextSecondary}"/><TextBlock Grid.Row="3" Grid.Column="1" Text="NORMAL" Foreground="{StaticResource Go}"/>
+                            <TextBlock Grid.Row="4" Text="Active alarms" Foreground="{StaticResource TextSecondary}"/><TextBlock Grid.Row="4" Grid.Column="1" Text="0" Foreground="{StaticResource Go}"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource Panel}" Margin="0,0,0,8">
+                    <StackPanel>
+                        <Border Style="{StaticResource HeaderBar}"><TextBlock Text="PROCESS VALUES" Style="{StaticResource PanelHeader}"/></Border>
+                        <Grid Margin="12">
+                            <Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions><RowDefinition Height="32"/><RowDefinition Height="32"/><RowDefinition Height="32"/><RowDefinition Height="32"/><RowDefinition Height="32"/></Grid.RowDefinitions>
+                            <TextBlock Text="Purge flow" Foreground="{StaticResource TextSecondary}"/><TextBlock Grid.Column="1" Text="{Binding PurgeFlow, StringFormat={}{0:0.0} Nm³/h}" Style="{StaticResource Mono}"/>
+                            <TextBlock Grid.Row="1" Text="Vehicle pressure" Foreground="{StaticResource TextSecondary}"/><TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding VehiclePressPressure, StringFormat={}{0:0.00} MPa}" Style="{StaticResource Mono}"/>
+                            <TextBlock Grid.Row="2" Text="Oxygen concentration" Foreground="{StaticResource TextSecondary}"/><TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding PurgeOxygen, StringFormat={}{0:0.00}%}" Foreground="{StaticResource Go}" FontFamily="{StaticResource FontMono}"/>
+                            <TextBlock Grid.Row="3" Text="Dew point" Foreground="{StaticResource TextSecondary}"/><TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding PurgeDewPoint, StringFormat={}{0:0.0} °C}" Style="{StaticResource Mono}"/>
+                            <TextBlock Grid.Row="4" Text="Line temperature" Foreground="{StaticResource TextSecondary}"/><TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding PurgeLineTemperature, StringFormat={}{0:0.0} °C}" Style="{StaticResource Mono}"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource Panel}">
+                    <StackPanel>
+                        <Border Style="{StaticResource HeaderBar}"><TextBlock Text="CONTROL PERMITS" Style="{StaticResource PanelHeader}"/></Border>
+                        <StackPanel Margin="12">
+                            <TextBlock Text="✓ PAD CLEAR" Foreground="{StaticResource Go}" Margin="0,3"/>
+                            <TextBlock Text="✓ GAS BANK PRESSURE NORMAL" Foreground="{StaticResource Go}" Margin="0,3"/>
+                            <TextBlock Text="✓ UMBILICAL CONNECTED" Foreground="{StaticResource Go}" Margin="0,3"/>
+                            <TextBlock Text="✓ PURGE O₂ BELOW LIMIT" Foreground="{StaticResource Go}" Margin="0,3"/>
+                            <TextBlock Text="● MANUAL VENT INHIBITED" Foreground="{StaticResource Inhibit}" Margin="0,3"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Grid>
+
+        <Border Grid.Row="2" Style="{StaticResource Panel}">
+            <Grid>
+                <Grid.RowDefinitions><RowDefinition Height="34"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+                <Border Style="{StaticResource HeaderBar}"><TextBlock Text="PRESSURIZATION / PURGE COMMANDS · DEMO / READ-ONLY SAFETY GATE" Style="{StaticResource PanelHeader}"/></Border>
+                <UniformGrid Grid.Row="1" Columns="6" Margin="10">
+                    <Button Content="START GN2 PURGE" Style="{StaticResource GoButton}" Margin="4" IsEnabled="False"/>
+                    <Button Content="PURGE HOLD" Style="{StaticResource HoldButton}" Margin="4" IsEnabled="False"/>
+                    <Button Content="ARM HE PRESS" Style="{StaticResource CmdButton}" Margin="4" IsEnabled="False"/>
+                    <Button Content="CLOSE GAS SUPPLY" Style="{StaticResource CmdButton}" Margin="4" IsEnabled="False"/>
+                    <Button Content="VENT ARM" Style="{StaticResource CmdButton}" Margin="4" IsEnabled="False"/>
+                    <Button Content="GAS SYSTEM ABORT" Style="{StaticResource AbortButton}" Margin="4" IsEnabled="False"/>
+                </UniformGrid>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

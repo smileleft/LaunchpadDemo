@@ -1,0 +1,174 @@
+<UserControl x:Class="LaunchControl.Views.PropellantPanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             MinWidth="1050" MinHeight="650">
+    <UserControl.Resources>
+        <Style x:Key="Tag" TargetType="TextBlock" BasedOn="{StaticResource Mono}">
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="Foreground" Value="{StaticResource TextMuted}"/>
+        </Style>
+        <Style x:Key="Value" TargetType="TextBlock" BasedOn="{StaticResource Mono}">
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="{StaticResource Info}"/>
+        </Style>
+        <Style x:Key="Valve" TargetType="Border">
+            <Setter Property="Width" Value="28"/><Setter Property="Height" Value="28"/>
+            <Setter Property="Background" Value="{StaticResource GoDim}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource Go}"/>
+            <Setter Property="BorderThickness" Value="1"/><Setter Property="CornerRadius" Value="14"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="44"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="150"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Style="{StaticResource HeaderBar}">
+            <Grid Margin="12,0">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="PROPELLANT SYSTEM  ·  P&amp;ID" Foreground="{StaticResource TextPrimary}" FontWeight="SemiBold" FontSize="13"/>
+                    <Border Background="{StaticResource GoDim}" BorderBrush="{StaticResource Go}" BorderThickness="1" Margin="14,0,0,0" Padding="8,2">
+                        <TextBlock Text="REMOTE / AUTO" Foreground="{StaticResource Go}" FontSize="10" FontWeight="Bold"/>
+                    </Border>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <TextBlock Text="PLC-PROP-A" Foreground="{StaticResource TextMuted}" FontSize="10" Margin="0,0,8,0"/>
+                    <Ellipse Width="9" Height="9" Fill="{StaticResource Go}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Row="1" Margin="8">
+            <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="270"/></Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Style="{StaticResource Panel}" Margin="0,0,8,0">
+                <Canvas Background="{StaticResource Bg0}" ClipToBounds="True">
+                    <!-- section labels -->
+                    <TextBlock Canvas.Left="28" Canvas.Top="18" Text="LOX STORAGE &amp; TRANSFER" Foreground="{StaticResource Info}" FontSize="11" FontWeight="SemiBold"/>
+                    <TextBlock Canvas.Left="28" Canvas.Top="310" Text="RP-1 STORAGE &amp; TRANSFER" Foreground="{StaticResource Caution}" FontSize="11" FontWeight="SemiBold"/>
+                    <TextBlock Canvas.Left="760" Canvas.Top="18" Text="VEHICLE INTERFACE" Foreground="{StaticResource TextSecondary}" FontSize="11" FontWeight="SemiBold"/>
+
+                    <!-- LOX tank -->
+                    <Border Canvas.Left="55" Canvas.Top="65" Width="150" Height="190" CornerRadius="55,55,18,18" BorderBrush="{StaticResource Info}" BorderThickness="2" Background="{StaticResource Bg1}">
+                        <Grid ClipToBounds="True">
+                            <Rectangle VerticalAlignment="Bottom" Height="{Binding LoxFillPixels}" Fill="#263DBEE6"/>
+                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <TextBlock Text="TK-LOX-01" Style="{StaticResource Tag}"/>
+                                <TextBlock Text="{Binding LoxLevel, StringFormat={}{0:0.0}%}" Style="{StaticResource Value}"/>
+                                <TextBlock Text="STORAGE TANK" Foreground="{StaticResource TextMuted}" FontSize="9"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <TextBlock Canvas.Left="60" Canvas.Top="263" Text="PT-101" Style="{StaticResource Tag}"/>
+                    <TextBlock Canvas.Left="108" Canvas.Top="260" Text="{Binding LoxStoragePressure, StringFormat={}{0:0.00} MPa}" Style="{StaticResource Mono}" Foreground="{StaticResource TextPrimary}"/>
+
+                    <!-- LOX pipe -->
+                    <Rectangle Canvas.Left="205" Canvas.Top="155" Width="560" Height="4" Fill="{StaticResource Info}"/>
+                    <Rectangle Canvas.Left="765" Canvas.Top="155" Width="4" Height="90" Fill="{StaticResource Info}"/>
+                    <Border Canvas.Left="270" Canvas.Top="143" Style="{StaticResource Valve}"><TextBlock Text="V" Foreground="{StaticResource Go}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/></Border>
+                    <TextBlock Canvas.Left="262" Canvas.Top="174" Text="LV-101 OPEN" Style="{StaticResource Tag}"/>
+                    <Border Canvas.Left="410" Canvas.Top="137" Width="58" Height="42" Background="{StaticResource Bg2}" BorderBrush="{StaticResource Info}" BorderThickness="1">
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center"><TextBlock Text="P-101" Style="{StaticResource Tag}"/><TextBlock Text="RUN" Foreground="{StaticResource Go}" FontSize="10" FontWeight="Bold"/></StackPanel>
+                    </Border>
+                    <TextBlock Canvas.Left="520" Canvas.Top="126" Text="FT-103" Style="{StaticResource Tag}"/>
+                    <TextBlock Canvas.Left="520" Canvas.Top="144" Text="{Binding LoxFlow, StringFormat={}{0:0.0} kg/s}" Style="{StaticResource Value}"/>
+                    <Border Canvas.Left="650" Canvas.Top="143" Style="{StaticResource Valve}"><TextBlock Text="V" Foreground="{StaticResource Go}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/></Border>
+                    <TextBlock Canvas.Left="640" Canvas.Top="174" Text="FCV-104 AUTO" Style="{StaticResource Tag}"/>
+
+                    <!-- RP1 tank -->
+                    <Border Canvas.Left="55" Canvas.Top="350" Width="150" Height="190" CornerRadius="55,55,18,18" BorderBrush="{StaticResource Caution}" BorderThickness="2" Background="{StaticResource Bg1}">
+                        <Grid ClipToBounds="True">
+                            <Rectangle VerticalAlignment="Bottom" Height="{Binding Rp1FillPixels}" Fill="#26F5C542"/>
+                            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <TextBlock Text="TK-RP1-01" Style="{StaticResource Tag}"/>
+                                <TextBlock Text="{Binding Rp1Level, StringFormat={}{0:0.0}%}" Style="{StaticResource Value}" Foreground="{StaticResource Caution}"/>
+                                <TextBlock Text="STORAGE TANK" Foreground="{StaticResource TextMuted}" FontSize="9"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                    <TextBlock Canvas.Left="60" Canvas.Top="548" Text="PT-201" Style="{StaticResource Tag}"/>
+                    <TextBlock Canvas.Left="108" Canvas.Top="545" Text="{Binding Rp1StoragePressure, StringFormat={}{0:0.00} MPa}" Style="{StaticResource Mono}" Foreground="{StaticResource TextPrimary}"/>
+
+                    <!-- RP1 pipe -->
+                    <Rectangle Canvas.Left="205" Canvas.Top="440" Width="560" Height="4" Fill="{StaticResource Caution}"/>
+                    <Rectangle Canvas.Left="765" Canvas.Top="355" Width="4" Height="89" Fill="{StaticResource Caution}"/>
+                    <Border Canvas.Left="270" Canvas.Top="428" Style="{StaticResource Valve}"><TextBlock Text="V" Foreground="{StaticResource Go}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/></Border>
+                    <TextBlock Canvas.Left="262" Canvas.Top="459" Text="LV-201 OPEN" Style="{StaticResource Tag}"/>
+                    <Border Canvas.Left="410" Canvas.Top="422" Width="58" Height="42" Background="{StaticResource Bg2}" BorderBrush="{StaticResource Caution}" BorderThickness="1">
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center"><TextBlock Text="P-201" Style="{StaticResource Tag}"/><TextBlock Text="RUN" Foreground="{StaticResource Go}" FontSize="10" FontWeight="Bold"/></StackPanel>
+                    </Border>
+                    <TextBlock Canvas.Left="520" Canvas.Top="411" Text="FT-203" Style="{StaticResource Tag}"/>
+                    <TextBlock Canvas.Left="520" Canvas.Top="429" Text="{Binding Rp1Flow, StringFormat={}{0:0.0} kg/s}" Style="{StaticResource Value}" Foreground="{StaticResource Caution}"/>
+                    <Border Canvas.Left="650" Canvas.Top="428" Style="{StaticResource Valve}"><TextBlock Text="V" Foreground="{StaticResource Go}" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/></Border>
+                    <TextBlock Canvas.Left="640" Canvas.Top="459" Text="FCV-204 AUTO" Style="{StaticResource Tag}"/>
+
+                    <!-- vehicle -->
+                    <Border Canvas.Left="720" Canvas.Top="245" Width="98" Height="110" BorderBrush="{StaticResource TextSecondary}" BorderThickness="1" Background="{StaticResource Bg2}" CornerRadius="45,45,8,8">
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center"><TextBlock Text="KSLV-X" Foreground="{StaticResource TextPrimary}" FontWeight="Bold"/><TextBlock Text="UMB-01" Style="{StaticResource Tag}" Margin="0,5,0,0"/><TextBlock Text="MATED" Foreground="{StaticResource Go}" FontSize="10" FontWeight="Bold"/></StackPanel>
+                    </Border>
+                    <Rectangle Canvas.Left="767" Canvas.Top="245" Width="4" Height="110" Fill="{StaticResource TextSecondary}"/>
+
+                    <!-- vent lines -->
+                    <Rectangle Canvas.Left="130" Canvas.Top="42" Width="4" Height="23" Fill="{StaticResource Inhibit}"/>
+                    <Border Canvas.Left="116" Canvas.Top="31" Style="{StaticResource Valve}" BorderBrush="{StaticResource Inhibit}" Background="{StaticResource InhibitDim}"><TextBlock Text="V" Foreground="{StaticResource Inhibit}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border>
+                    <TextBlock Canvas.Left="149" Canvas.Top="36" Text="VENT CLOSED" Foreground="{StaticResource Inhibit}" FontSize="9"/>
+                </Canvas>
+            </Border>
+
+            <StackPanel Grid.Column="1">
+                <Border Style="{StaticResource Panel}" Margin="0,0,0,8">
+                    <StackPanel>
+                        <Border Style="{StaticResource HeaderBar}"><TextBlock Text="SYSTEM SUMMARY" Style="{StaticResource PanelHeader}"/></Border>
+                        <Grid Margin="12"><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><Grid.RowDefinitions><RowDefinition Height="30"/><RowDefinition Height="30"/><RowDefinition Height="30"/><RowDefinition Height="30"/><RowDefinition Height="30"/></Grid.RowDefinitions>
+                            <TextBlock Text="LOX loading" Foreground="{StaticResource TextSecondary}"/><TextBlock Grid.Column="1" Text="ACTIVE" Foreground="{StaticResource Go}" FontWeight="Bold"/>
+                            <TextBlock Grid.Row="1" Text="RP-1 loading" Foreground="{StaticResource TextSecondary}"/><TextBlock Grid.Row="1" Grid.Column="1" Text="ACTIVE" Foreground="{StaticResource Go}" FontWeight="Bold"/>
+                            <TextBlock Grid.Row="2" Text="Line chilldown" Foreground="{StaticResource TextSecondary}"/><TextBlock Grid.Row="2" Grid.Column="1" Text="COMPLETE" Foreground="{StaticResource Go}"/>
+                            <TextBlock Grid.Row="3" Text="Leak detection" Foreground="{StaticResource TextSecondary}"/><TextBlock Grid.Row="3" Grid.Column="1" Text="NORMAL" Foreground="{StaticResource Go}"/>
+                            <TextBlock Grid.Row="4" Text="Active alarms" Foreground="{StaticResource TextSecondary}"/><TextBlock Grid.Row="4" Grid.Column="1" Text="0" Foreground="{StaticResource Go}"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource Panel}" Margin="0,0,0,8">
+                    <StackPanel>
+                        <Border Style="{StaticResource HeaderBar}"><TextBlock Text="VEHICLE TANKS" Style="{StaticResource PanelHeader}"/></Border>
+                        <StackPanel Margin="12">
+                            <TextBlock Text="LOX FLIGHT TANK" Style="{StaticResource Tag}"/><ProgressBar Height="8" Margin="0,5,0,4" Minimum="0" Maximum="100" Value="{Binding LoxLevel}" Foreground="{StaticResource Info}" Background="{StaticResource Bg0}"/><TextBlock Text="{Binding LoxLevel, StringFormat={}{0:0.0}%}" Style="{StaticResource Mono}"/>
+                            <TextBlock Text="RP-1 FLIGHT TANK" Style="{StaticResource Tag}" Margin="0,14,0,0"/><ProgressBar Height="8" Margin="0,5,0,4" Minimum="0" Maximum="100" Value="{Binding Rp1Level}" Foreground="{StaticResource Caution}" Background="{StaticResource Bg0}"/><TextBlock Text="{Binding Rp1Level, StringFormat={}{0:0.0}%}" Style="{StaticResource Mono}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+                <Border Style="{StaticResource Panel}">
+                    <StackPanel>
+                        <Border Style="{StaticResource HeaderBar}"><TextBlock Text="CONTROL PERMITS" Style="{StaticResource PanelHeader}"/></Border>
+                        <StackPanel Margin="12">
+                            <TextBlock Text="✓ PAD CLEAR" Foreground="{StaticResource Go}" Margin="0,3"/>
+                            <TextBlock Text="✓ FIRE SYSTEM NORMAL" Foreground="{StaticResource Go}" Margin="0,3"/>
+                            <TextBlock Text="✓ E-STOP HEALTHY" Foreground="{StaticResource Go}" Margin="0,3"/>
+                            <TextBlock Text="✓ TRANSFER PERMIT" Foreground="{StaticResource Go}" Margin="0,3"/>
+                            <TextBlock Text="● VENT COMMAND INHIBITED" Foreground="{StaticResource Inhibit}" Margin="0,3"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Grid>
+
+        <Border Grid.Row="2" Style="{StaticResource Panel}" Margin="8,0,8,8">
+            <Grid>
+                <Grid.RowDefinitions><RowDefinition Height="34"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+                <Border Style="{StaticResource HeaderBar}"><TextBlock Text="PROPULSION COMMANDS  ·  DEMO / READ-ONLY SAFETY GATE" Style="{StaticResource PanelHeader}"/></Border>
+                <UniformGrid Grid.Row="1" Columns="6" Margin="10">
+                    <Button Content="LOX LOAD HOLD" Style="{StaticResource HoldButton}" Margin="4" IsEnabled="False"/>
+                    <Button Content="RP-1 LOAD HOLD" Style="{StaticResource HoldButton}" Margin="4" IsEnabled="False"/>
+                    <Button Content="CLOSE TRANSFER" Style="{StaticResource CmdButton}" Margin="4" IsEnabled="False"/>
+                    <Button Content="VENT ARM" Style="{StaticResource CmdButton}" Margin="4" IsEnabled="False"/>
+                    <Button Content="DRAIN ARM" Style="{StaticResource CmdButton}" Margin="4" IsEnabled="False"/>
+                    <Button Content="PROP ABORT" Style="{StaticResource AbortButton}" Margin="4" IsEnabled="False"/>
+                </UniformGrid>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

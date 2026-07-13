@@ -1,0 +1,93 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Panel container -->
+    <Style x:Key="Panel" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource Bg1}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Line}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="0"/>
+    </Style>
+
+    <!-- Panel header text -->
+    <Style x:Key="PanelHeader" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource FontUI}"/>
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{StaticResource TextSecondary}"/>
+        <Setter Property="Padding" Value="10,7"/>
+        <!-- letter-spacing emulation not native; kept clean -->
+    </Style>
+
+    <!-- Section header bar -->
+    <Style x:Key="HeaderBar" TargetType="Border">
+        <Setter Property="Background" Value="{StaticResource Bg2}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Line}"/>
+        <Setter Property="BorderThickness" Value="0,0,0,1"/>
+    </Style>
+
+    <!-- Base command button -->
+    <Style x:Key="CmdButton" TargetType="Button">
+        <Setter Property="FontFamily" Value="{StaticResource FontUI}"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+        <Setter Property="Background" Value="{StaticResource Bg2}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource LineStrong}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="14,8"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="bd" Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="bd" Property="Background" Value="{StaticResource Bg3}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.35"/>
+                            <Setter Property="Cursor" Value="Arrow"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- HOLD button (amber) -->
+    <Style x:Key="HoldButton" TargetType="Button" BasedOn="{StaticResource CmdButton}">
+        <Setter Property="Foreground" Value="{StaticResource Caution}"/>
+        <Setter Property="Background" Value="{StaticResource CautionDim}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Caution}"/>
+    </Style>
+
+    <!-- ABORT button (red) -->
+    <Style x:Key="AbortButton" TargetType="Button" BasedOn="{StaticResource CmdButton}">
+        <Setter Property="Foreground" Value="#FFFFFF"/>
+        <Setter Property="Background" Value="{StaticResource NoGoDim}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource NoGo}"/>
+    </Style>
+
+    <!-- GO / RESUME button (green) -->
+    <Style x:Key="GoButton" TargetType="Button" BasedOn="{StaticResource CmdButton}">
+        <Setter Property="Foreground" Value="{StaticResource Go}"/>
+        <Setter Property="Background" Value="{StaticResource GoDim}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Go}"/>
+    </Style>
+
+    <!-- Mono data text -->
+    <Style x:Key="Mono" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource FontMono}"/>
+        <Setter Property="Foreground" Value="{StaticResource TextPrimary}"/>
+        <Setter Property="FontSize" Value="12"/>
+    </Style>
+
+    <!-- ScrollViewer with thin dark scrollbars kept default; DataGrid-free custom lists used -->
+
+</ResourceDictionary>
