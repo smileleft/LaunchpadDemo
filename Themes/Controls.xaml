@@ -90,4 +90,20 @@
 
     <!-- ScrollViewer with thin dark scrollbars kept default; DataGrid-free custom lists used -->
 
+    <!-- Shared telemetry label/value styles used by subsystem diagrams -->
+    <Style x:Key="Tag"
+           TargetType="TextBlock"
+           BasedOn="{StaticResource Mono}">
+        <Setter Property="FontSize" Value="10"/>
+        <Setter Property="Foreground" Value="{StaticResource TextMuted}"/>
+    </Style>
+    
+    <Style x:Key="Value"
+           TargetType="TextBlock"
+           BasedOn="{StaticResource Mono}">
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{StaticResource Info}"/>
+    </Style>
+
 </ResourceDictionary>
