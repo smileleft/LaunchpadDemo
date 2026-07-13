@@ -86,7 +86,8 @@
                     <v:NavIcon x:Name="NavSequencer" Glyph="&#x23F1;" Label="SEQ" Click="ShowConsole"/>
                     <v:NavIcon x:Name="NavPropellant" Glyph="&#x2699;" Label="PROP" Click="ShowPropellant"/>
                     <v:NavIcon x:Name="NavPressPurge" Glyph="&#x21C4;" Label="P/P" Click="ShowPressPurge"/>
-                    <v:NavIcon Glyph="&#x26A1;" Label="PWR"/>
+                    <v:NavIcon x:Name="NavPower" Glyph="&#x26A1;" Label="PWR" Click="ShowPower"/>
+                    <v:NavIcon x:Name="NavMechanical" Glyph="&#x2692;" Label="MECH" Click="ShowMechanical"/>
                     <v:NavIcon Glyph="&#x25B2;" Label="TRND"/>
                     <v:NavIcon Glyph="&#x26A0;" Label="ALM"/>
                     <v:NavIcon Glyph="&#x1F512;" Label="ILK"/>
@@ -110,6 +111,8 @@
 
             <v:PropellantPanel x:Name="PropellantPage" Grid.Column="1" Margin="8" Visibility="Collapsed"/>
             <v:PressurizationPurgePanel x:Name="PressPurgePage" Grid.Column="1" Margin="8" Visibility="Collapsed"/>
+            <v:PowerSystemPanel x:Name="PowerPage" Grid.Column="1" Margin="8" Visibility="Collapsed"/>
+            <v:MechanicalFacilitiesPanel x:Name="MechanicalPage" Grid.Column="1" Margin="8" Visibility="Collapsed"/>
         </Grid>
 
         <!-- ============================= STATUS STRIP ============================= -->
