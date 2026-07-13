@@ -272,6 +272,38 @@ public sealed class ConsoleViewModel : ObservableObject
     private double _purgeLineTemperature = 18.4;
     public double PurgeLineTemperature { get => _purgeLineTemperature; set => SetProperty(ref _purgeLineTemperature, value); }
 
+    // ============================================================= Power system telemetry
+
+    private double _utilityVoltage = 400.2;
+    public double UtilityVoltage { get => _utilityVoltage; set => SetProperty(ref _utilityVoltage, value); }
+    private double _utilityFrequency = 60.00;
+    public double UtilityFrequency { get => _utilityFrequency; set => SetProperty(ref _utilityFrequency, value); }
+    private double _upsLoad = 42.6;
+    public double UpsLoad { get => _upsLoad; set => SetProperty(ref _upsLoad, value); }
+    private double _upsRuntime = 47.0;
+    public double UpsRuntime { get => _upsRuntime; set => SetProperty(ref _upsRuntime, value); }
+    private double _dcBusVoltage = 28.1;
+    public double DcBusVoltage { get => _dcBusVoltage; set => SetProperty(ref _dcBusVoltage, value); }
+    private double _flightBatteryVoltage = 28.4;
+    public double FlightBatteryVoltage { get => _flightBatteryVoltage; set => SetProperty(ref _flightBatteryVoltage, value); }
+    private double _generatorLoad = 18.2;
+    public double GeneratorLoad { get => _generatorLoad; set => SetProperty(ref _generatorLoad, value); }
+
+    // ============================================================= Mechanical facilities telemetry
+
+    private double _erectorAngle = 89.96;
+    public double ErectorAngle { get => _erectorAngle; set => SetProperty(ref _erectorAngle, value); }
+    private double _erectorHydraulicPressure = 18.7;
+    public double ErectorHydraulicPressure { get => _erectorHydraulicPressure; set => SetProperty(ref _erectorHydraulicPressure, value); }
+    private double _serviceArmPosition = 100.0;
+    public double ServiceArmPosition { get => _serviceArmPosition; set => SetProperty(ref _serviceArmPosition, value); }
+    private double _waterTankLevel = 91.5;
+    public double WaterTankLevel { get => _waterTankLevel; set => SetProperty(ref _waterTankLevel, value); }
+    private double _delugePressure = 1.24;
+    public double DelugePressure { get => _delugePressure; set => SetProperty(ref _delugePressure, value); }
+    private double _flameDeflectorTemperature = 26.4;
+    public double FlameDeflectorTemperature { get => _flameDeflectorTemperature; set => SetProperty(ref _flameDeflectorTemperature, value); }
+
     // ============================================================= Tick loop
 
     private void OnTick(object? sender, EventArgs e)
@@ -351,7 +383,25 @@ public sealed class ConsoleViewModel : ObservableObject
                     s.Detail = $"GN2 {Gn2BankPressure:0.0} MPa  He {HeBankPressure:0.0} MPa";
                     break;
                 case "PWR":
-                    s.PrimaryValue = _tel.Jitter(28.1, 0.05).ToString("0.0");
+                    UtilityVoltage = _tel.Jitter(400.2, 0.8);
+                    UtilityFrequency = _tel.Jitter(60.0, 0.015);
+                    UpsLoad = _tel.Jitter(42.6, 0.7);
+                    UpsRuntime = _tel.Jitter(47.0, 0.4);
+                    DcBusVoltage = _tel.Jitter(28.1, 0.05);
+                    FlightBatteryVoltage = _tel.Jitter(28.4, 0.04);
+                    GeneratorLoad = _tel.Jitter(18.2, 0.5);
+                    s.PrimaryValue = DcBusVoltage.ToString("0.0");
+                    s.Detail = $"AC {UtilityVoltage:0} V  UPS {UpsLoad:0.0}%  DC {DcBusVoltage:0.0} V";
+                    break;
+                case "MECH":
+                    ErectorAngle = _tel.Jitter(89.96, 0.015);
+                    ErectorHydraulicPressure = _tel.Jitter(18.7, 0.15);
+                    ServiceArmPosition = Math.Clamp(_tel.Jitter(100.0, 0.08), 0, 100);
+                    WaterTankLevel = _tel.Jitter(91.5, 0.12);
+                    DelugePressure = _tel.Jitter(1.24, 0.015);
+                    FlameDeflectorTemperature = _tel.Jitter(26.4, 0.3);
+                    s.PrimaryValue = "VERT";
+                    s.Detail = $"T/E {ErectorAngle:0.00}°  ARMS MATED  HPU {ErectorHydraulicPressure:0.0} MPa";
                     break;
                 case "WX":
                     var w = _tel.Jitter(7.4, 0.6);
